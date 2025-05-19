@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #1a1a2e;
+  --secondary: #0f3460;
+  --accent: #e94560;
+  --background: #16213e;
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --input-bg: rgba(255, 255, 255, 0.1);
+  --input-border: rgba(255, 255, 255, 0.2);
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background);
+  color: var(--text-primary);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+a {
+  color: #1877f2; /* Facebook blue for links */
+}
+
+a:hover {
+  color: #ffffff; /* White on hover */
+}
+
+button, .button {
+  @apply transform transition-all duration-200 hover:scale-105;
+  background-color: var(--accent);
+  color: var(--text-primary);
+}
+
+button:hover, .button:hover {
+  background-color: #ff5472;
+  color: var(--text-primary);
+}
+
+.navbar {
+  background-color: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.navbar a {
+  color: var(--text-primary);
+}
+
+.navbar a:hover {
+  color: var(--accent);
+}
+
+input, select {
+  @apply bg-opacity-20 backdrop-blur-md border-opacity-30;
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--text-primary);
+}
+
+.card {
+  @apply backdrop-blur-md bg-opacity-20;
+  background-color: var(--primary);
+}
+
+.glass-effect {
+  @apply backdrop-blur-md bg-opacity-20;
+  background-color: rgba(26, 26, 46, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+label {
+  color: var(--text-secondary);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}

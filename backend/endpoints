@@ -1,0 +1,505 @@
+
+// // Endpoint for fetching all courses
+// app.get("/courses", authenticate, async (req, res) => {
+//   console.log("Courses endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT * FROM Course");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching students
+// app.get("/students", authenticate, async (req, res) => {
+//   console.log("Students endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT * FROM Student");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching degree programs
+// app.get("/degreeprograms", authenticate, async (req, res) => {
+//   console.log("Degree programs endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT * FROM Deg_Program");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching students by degree program
+// app.get("/students", authenticate, async (req, res) => {
+//   console.log("Students endpoint reached");
+//   const degProg = req.query.degProg;
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool
+//       .request()
+//       .query(`SELECT * FROM Student WHERE Deg_Prog = '${degProg}'`);
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for enrolling students
+// app.post("/enrollstudent", authenticate, async (req, res) => {
+//   console.log("Enroll student endpoint reached");
+//   const {
+//     studentName,
+//     studentUsername,
+//     studentPassword,
+//     degreeProgram,
+//     courses,
+//   } = req.body;
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     if (pool) {
+//       console.log("Connected to the database using provided credentials");
+//     }
+//     // Convert courses array to XML format
+//     const coursesXML = `<Courses>${courses
+//       .map((courseId) => `<CourseID>${courseId}</CourseID>`)
+//       .join("")}</Courses>`;
+
+//     // Call the stored procedure
+//     await pool
+//       .request()
+//       .input("StudentName", sql.NVarChar, studentName)
+//       .input("StudentUsername", sql.NVarChar, studentUsername)
+//       .input("StudentPassword", sql.NVarChar, studentPassword)
+//       .input("DegreeProgram", sql.NVarChar, degreeProgram)
+//       .input("Courses", sql.NVarChar, coursesXML)
+//       .execute("EnrollStudent");
+
+//     console.log("Student enrolled successfully");
+//     res.json({ message: "Student enrolled successfully" });
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching courses associated with a specific student
+// app.get("/studentcourses", authenticate, async (req, res) => {
+//   console.log("Student courses endpoint reached");
+//   const studentId = req.query.studentId;
+
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+
+//     const result = await pool.request()
+//       .query(`SELECT Course.Course_Code, Course.Course_Name FROM Course
+//               INNER JOIN Student_Course ON Course.Course_id = Student_Course.Course_id
+//               WHERE Student_Course.StudentID = ${studentId}`);
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching all info about Aircraft
+// app.get("/aircraft", authenticate, async (req, res) => {
+//   console.log("Aircraft endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT * FROM Aircraft");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching all info about City
+// app.get("/city", authenticate, async (req, res) => {
+//   console.log("City endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT * FROM City");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching all info about Response
+// app.get("/response", authenticate, async (req, res) => {
+//   console.log("Response endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT * FROM Response");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching all info about Country
+// app.get("/country", authenticate, async (req, res) => {
+//   console.log("Country endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT * FROM Country");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching all info about Seat
+// app.get("/seat", authenticate, async (req, res) => {
+//   console.log("Seat endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT * FROM Seat");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching all info about Baggage
+// app.get("/baggage", authenticate, async (req, res) => {
+//   console.log("Baggage endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT * FROM Baggage");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching all info about Airport
+// app.get("/airport", authenticate, async (req, res) => {
+//   console.log("Airport endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT * FROM Airport");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching crew id and crew name from Crew table
+// app.get("/crew", authenticate, async (req, res) => {
+//   console.log("Crew endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT crew_id, crew_name FROM Crew");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching reservation id and datetime from Reservation table
+// app.get("/reservation", authenticate, async (req, res) => {
+//   console.log("Reservation endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT reservation_id, reservation_datetime FROM Reservation");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching all info about Flight
+// app.get("/flight", authenticate, async (req, res) => {
+//   console.log("Flight endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT * FROM Flight");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching distinct gender from Crew table
+// app.get("/crew-gender", authenticate, async (req, res) => {
+//   console.log("Crew gender endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT DISTINCT crew_gender FROM Crew");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching distinct gender from Passenger table
+// app.get("/passenger-gender", authenticate, async (req, res) => {
+//   console.log("Passenger gender endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT DISTINCT passenger_gender FROM Passenger");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching distinct arrival airport from Flight table
+// app.get("/flight-arrival-airport", authenticate, async (req, res) => {
+//   console.log("Flight arrival airport endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT DISTINCT flight_arrival_airport FROM Flight");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching distinct departure airport from Flight table
+// app.get("/flight-departure-airport", authenticate, async (req, res) => {
+//   console.log("Flight departure airport endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT DISTINCT flight_departure_airport FROM Flight");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching distinct arrival datetime from Flight table
+// app.get("/flight-arrival-datetime", authenticate, async (req, res) => {
+//   console.log("Flight arrival datetime endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT DISTINCT flight_arrival_datetime FROM Flight");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching distinct departure datetime from Flight table
+// app.get("/flight-departure-datetime", authenticate, async (req, res) => {
+//   console.log("Flight departure datetime endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT DISTINCT flight_departure_datetime FROM Flight");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching distinct passenger from Baggage table
+// app.get("/baggage-passenger", authenticate, async (req, res) => {
+//   console.log("Baggage passenger endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT DISTINCT passenger FROM Baggage");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching distinct crew salary from Crew table
+// app.get("/crew-salary", authenticate, async (req, res) => {
+//   console.log("Crew salary endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT DISTINCT crew_salary FROM Crew");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching distinct passenger from Feedback table
+// app.get("/feedback-passenger", authenticate, async (req, res) => {
+//   console.log("Feedback passenger endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT DISTINCT passenger FROM Feedback");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// // Endpoint for fetching distinct rating from Feedback table
+// app.get("/feedback-rating", authenticate, async (req, res) => {
+//   console.log("Feedback rating endpoint reached");
+//   try {
+//     const pool = await sql.connect({
+//       ...baseConfig,
+//       user: req.headers["x-username"],
+//       password: req.headers["x-password"],
+//     });
+//     const result = await pool.request().query("SELECT DISTINCT rating FROM Feedback");
+//     console.log("Query executed successfully");
+//     res.json(result.recordset);
+//   } catch (err) {
+//     console.error("SQL error:", err);
+//     res.status(500).json({ error: "SQL error" });
+//   }
+// });
+
+// app.listen(port, () => {
+//   console.log(`Backend server is running on http://localhost:${port}`);
+// });

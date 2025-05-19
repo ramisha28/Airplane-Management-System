@@ -1,0 +1,19 @@
+Remove Evrything Extra From #file:server.js 
+// MS SQL Server configuration
+const config = {
+  user: "RAM", // Replace with your actual username if necessary
+  password: "1234", // Leave empty for Windows Authentication
+  server: "REVISION-PC", // Your server name from SSMS
+  database: "AMS", // Replace with your database name
+  options: {
+    encrypt: false, // Use if you're on Windows Azure
+    trustServerCertificate: true, // For local development
+    trustedConnection: false, // Change to true for local development
+    enableArithAbort: true,
+    instancename: "SQLEXPRESS",
+  },
+};
+
+These Are The credentials for Connecting To SQL-Server, Username And Password Will come from #file:Login.jsx  Do not Use "dot-env".
+Create A #file:Home.jsx Homepage for an Airline Management System.
+Create A navbar similar to #file:Navigation.jsx That are for the Airline Management System and Have routes created when clicked upon.
